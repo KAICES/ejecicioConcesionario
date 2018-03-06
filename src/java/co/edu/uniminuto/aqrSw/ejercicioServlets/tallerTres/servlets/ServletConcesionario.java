@@ -5,6 +5,7 @@
  */
 package co.edu.uniminuto.aqrSw.ejercicioServlets.tallerTres.servlets;
 
+import co.edu.uniminuto.aqrSw.ejercicioServlets.tallerTres.vos.FormularioPersonaVo;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -17,6 +18,10 @@ import javax.servlet.http.HttpServletResponse;
  * @author cesar.ramirez
  */
 public class ServletConcesionario extends HttpServlet {
+    
+    
+    
+    private FormularioPersonaVo miForm;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,41 +37,64 @@ public class ServletConcesionario extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         
-//        double creditoCar[][] = new double[coutas+1][3]; 
+        
+        float saldoInicial;
+        float vlrCuota;
+        float saldoAct;
+        float saldos;
+        
+        saldoInicial = miForm.getValor() - miForm.getCoutaInicial();        
+        vlrCuota =  saldoInicial / miForm.getCoutas() ;
+        saldoAct =  vlrCuota * miForm.getCoutas() ;
+        saldos = saldoAct - vlrCuota;
+        
+        
+        
+        float creditoCar[][] = new float[miForm.getCoutas()+1][3]; 
+        
+        
+        for ( int i= 0 ; i < creditoCar.length; i++ ){
+                     
+                     creditoCar[i][0]= i +1 ; 
+                     
+                     
+                     if ( i == 0){
+                         saldos = saldoInicial;                        
+                         creditoCar[i][1] = miForm.getValor(); 
+                         creditoCar[i][2] = creditoCar[i][1] - miForm.getCoutaInicial();
+                     }
+                     
+                     else{                        
+                         creditoCar[i][1] = creditoCar[i-1][2];  
+                         creditoCar[i][2]= creditoCar[i][1] - vlrCuota ;
+                     }                                 
+                     
+             
+        }
+        
+//        String escribirCar[][] = new String[miForm.getCoutas()+1][3];
 //        
 //        
-//        for ( int i= 0 ; i < creditoCar.length; i++ ){
-//                     
-//                     creditoCar[i][0]= i +1 ; 
-//                     
-//                     
-//                     if ( i == 0){
-//                         saldos = saldoInicial;                        
-//                         creditoCar[i][1] = valorAuto; 
-//                         creditoCar[i][2] = creditoCar[i][1] - coutaInicial;
-//                     }
-//                     
-//                     else{                        
-//                         creditoCar[i][1] = creditoCar[i-1][2];  
-//                         creditoCar[i][2]= creditoCar[i][1] - vlrCuota ;
-//                     }                     
-//                     
-//                    
-//                     
-//             
+//        for ( int j= 0 ; j < escribirCar.length; j++ ){
+//        
+//                    escribirCar[j][0] =  String.valueOf(creditoCar[j][0]);
+//                    escribirCar[j][1] =  String.valueOf(creditoCar[j][1]);
+//                    escribirCar[j][2] =  String.valueOf(creditoCar[j][2]);           
+//            
 //        }
-//        
-//        String Salida = "Elementos de la Matriz\n";
-//                 for(int k=0;k<creditoCar.length;k++) {
-//                    for(int l=0;l<creditoCar[l].length;l++)
-//                            Salida+=creditoCar[k][l]+" ";
-//                            Salida+="\n";
-//            }
-//        JOptionPane.showMessageDialog(null,Salida,"MATRIZ DE VALORES",JOptionPane.INFORMATION_MESSAGE);
-//        
-//        
-//     }
-//    
+        
+        
+        String Salida = "Elementos de la Matriz\n";
+                 for(int k=0;k<creditoCar.length;k++) {
+                    for(int l=0;l<creditoCar[l].length;l++)
+                            Salida+= creditoCar[k][l]+" ";
+                            Salida+="\n";
+            }
+  //      JOptionPane.showMessageDialog(null,Salida,"MATRIZ DE VALORES",JOptionPane.INFORMATION_MESSAGE);
+        
+        
+     
+    
         
         
         
@@ -78,7 +106,7 @@ public class ServletConcesionario extends HttpServlet {
             out.println("<title>Servlet ServletConcesionario</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ServletConcesionario at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ServletConcesionario at <br><br>" + Salida + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {
@@ -112,28 +140,61 @@ public class ServletConcesionario extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
-    
-//        int coutas ;
-//        double coutaInicial ;
-//        double valorAuto;
-//
-//        double saldoInicial;
-//        double vlrCuota;
-//        double saldos;
-//        double saldoAct;
-//        double valor;      
-//        
-//        
-//        coutas = Integer.parseInt(JOptionPane.showInputDialog(null, "numero de cuotas"));
-//        valorAuto = Double.parseDouble(JOptionPane.showInputDialog(null, "valor del carro"));
-//        coutaInicial = Double.parseDouble(JOptionPane.showInputDialog(null, "valor de la cuota inicial"));
-//        
-//        saldoInicial = valorAuto - coutaInicial;        
-//        vlrCuota =  saldoInicial / coutas ;
-//        saldoAct =  vlrCuota * coutas ;
-//        saldos = saldoAct - vlrCuota;
-//    
+        
+            String nombre = request.getParameter("nombre");
+            int marca = Integer.parseInt(request.getParameter("marca"));
+            int coutas = Integer.parseInt(request.getParameter("cuotas"));
+            float coutaInicial = Float.parseFloat(request.getParameter("cuotaInicial"));   
+       
+             float valor ;
+            
+            
+            
+            switch (marca) {
+
+            case 1:
+                    
+                valor = 250000000;   
+               
+                break;
+			
+            case 2:
+
+                valor = 150000000;   
+               
+                break;
+			
+            case 3:
+
+                valor = 60000000;   
+               
+                break;
+            
+            case 4:
+
+                valor = 30000000;   
+               
+                break;
+                
+            case 5:
+
+                valor = 25000000;   
+               
+                break;    
+                
+                
+                
+               default:
+
+                    valor = 0 ;
+
+                   break;    
+
+            }      
+        
+        miForm = new FormularioPersonaVo (nombre, marca, coutas, coutaInicial , valor );    
+            
+        processRequest(request, response);  
     
     
     }
