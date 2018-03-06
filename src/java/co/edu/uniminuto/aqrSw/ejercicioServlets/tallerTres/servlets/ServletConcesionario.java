@@ -15,17 +15,13 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author cesar.ramirez
+ * @autores
+ * Cesar Ramirez == 378938
+ * Lizeth Castro == 310894
  */
 public class ServletConcesionario extends HttpServlet {
     
-    
-    
     private FormularioPersonaVo miForm;
-    
-
-    
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -39,19 +35,12 @@ public class ServletConcesionario extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        
-        
-  
-        
-        Long valorAuto = Long.parseLong(miForm.getValor());
-        
+            
+        Long valorAuto = Long.parseLong(miForm.getValor());        
         Long saldoInicial = valorAuto - miForm.getCoutaInicial();        
         Long vlrCuota =  saldoInicial / miForm.getCoutas() ;
         Long saldoAct =  vlrCuota * miForm.getCoutas() ;
         Long saldos = saldoAct - vlrCuota;
-        
-     
-        
         
         Long creditoCar[][] = new Long[miForm.getCoutas()+1][3]; 
         
@@ -59,23 +48,19 @@ public class ServletConcesionario extends HttpServlet {
         
         for (  i= 0 ; i < creditoCar.length; i++ ){
                      
-                     long k = i.longValue();
-            
-                    creditoCar[i][0]= k +1 ; 
+                    long k = i.longValue();            
+                    creditoCar[i][0]= k +1 ;               
                      
-                     
-                     if ( i == 0){
+                    if ( i == 0){
                          saldos = saldoInicial;                        
                          creditoCar[i][1] = valorAuto; 
                          creditoCar[i][2] = creditoCar[i][1] - miForm.getCoutaInicial();
-                     }
+                    }
                      
-                     else{                        
+                    else{                        
                          creditoCar[i][1] = creditoCar[i-1][2];  
                          creditoCar[i][2]= creditoCar[i][1] - vlrCuota ;
-                     }                                 
-                     
-             
+                    }       
         }
         
         try {
@@ -86,32 +71,68 @@ public class ServletConcesionario extends HttpServlet {
             out.println("<title>Servlet ServletConcesionario</title>");            
             out.println("</head>");
             out.println("<body>");
+            out.println("<style>");
+            out.println("#web{");
+            out.println("width: 100%;");
+            out.println("}");
+            out.println("#formulario{");
+            out.println("width: 80%;");
+            out.println("}");
+            out.println("</style>");
+            out.println("<body id='web'>");
+            out.println("<CENTER>");
+            out.println("<div id='formulario'> "); 
+            out.println("<form action='ServletConcesionario' method='POST'>");
+            out.println("<fieldset> "); 
+            out.println("<legend> <h3>SIMULADOR CUOTAS VEHICULO</h3></legend>");
+            out.println("Nombre:<br>");
+            out.println("<input type ='text' name='nombre'></input><br>");
+            out.println("<br>");
+            out.println("Vehículo: <br> ");
+            out.println("<select name='marca' >");
+            out.println("<option >Seleccione Vehiculo...</option>");
+            out.println("<option value='1'>Mercedes-Benz / C350 </option>");
+            out.println("<option value='2'>Audi / A4</option>");
+            out.println("<option value='3'>VolksWagen / Jetta GT </option>");
+            out.println("<option value='4'>Renault / Sandero </option>");
+            out.println("<option value='5'>Chevrolet / Sail </option><br>  ");
+            out.println("</select> <br><br>");
+            out.println("Valor cuota Inicial($):<br>");
+            out.println("<input type ='text' name='cuotaInicial'></input><br><br>");
+            out.println("Numero Cuotas:<br>");
+            out.println("<input type ='text' name='cuotas' ></input><br><br>");
+            out.println("<input type='submit' value='Calcular'/>");
+            out.println("</fieldset>");
+            out.println("</form>");
+            out.println("</div>");
+            out.println("</CENTER>");
             out.println("<br>");
             out.println("<h1>Hola Sr(a) " + miForm.getNombre() + " estos serian los valores por la compra del automovil</h1><br><br>");   
             out.println("<TABLE BORDER>");
             out.println("<TR>");
             out.println("<TD>Cuotas</TD> <TD>Valor</TD> <TD>Saldo</TD>");
             out.println("</TR>");                   
+            for(int k=0;k<creditoCar.length;k++) {
 
-                 for(int k=0;k<creditoCar.length;k++) {
-                    
-                     if ( k > 0 ) {
-                            out.println("<TR>");
-                            out.println("<TD>" + creditoCar[k][0] + "</TD> <TD>$ "+ creditoCar[1][1] + "</TD> <TD>$ "+ creditoCar[k][2] + "</TD>");
-                            out.println("</TR>");
-                     }else{
-                            out.println("<TR>");
-                            out.println("<TD>" + creditoCar[k][0] + "</TD> <TD>$ "+ creditoCar[k][1] + "</TD> <TD>$ "+ creditoCar[k][2] + "</TD>");
-                            out.println("</TR>");
-                     
-                     }
-                     
-                 }
+                if ( k > 0 ) {
+                       out.println("<TR>");
+                       out.println("<TD>" + creditoCar[k][0] + "</TD> <TD>$ "+ creditoCar[1][1] + "</TD> <TD>$ "+ creditoCar[k][2] + "</TD>");
+                       out.println("</TR>");
+                }else{
+                       out.println("<TR>");
+                       out.println("<TD>" + creditoCar[k][0] + "</TD> <TD>$ "+ creditoCar[k][1] + "</TD> <TD>$ "+ creditoCar[k][2] + "</TD>");
+                       out.println("</TR>");
+
+                }
+
+            }
+            
             out.println("</TR>");
             out.println("</TABLE>");        
             out.println("</body>");
             out.println("</html>");
         } finally {
+            
             out.close();
         }
     }
