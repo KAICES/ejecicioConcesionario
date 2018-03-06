@@ -86,20 +86,29 @@ public class ServletConcesionario extends HttpServlet {
             out.println("<title>Servlet ServletConcesionario</title>");            
             out.println("</head>");
             out.println("<body>");
-            
-            out.println("<h1><br> Cuotas | Valor             | $  Saldo              </h1>");   
+            out.println("<br>");
+            out.println("<h1>Hola Sr(a) " + miForm.getNombre() + " estos serian los valores por la compra del automovil</h1><br><br>");   
+            out.println("<TABLE BORDER>");
+            out.println("<TR>");
+            out.println("<TD>Cuotas</TD> <TD>Valor</TD> <TD>Saldo</TD>");
+            out.println("</TR>");                   
+
                  for(int k=0;k<creditoCar.length;k++) {
                     
                      if ( k > 0 ) {
-                            out.println("<h1><br>" + creditoCar[k][0] + "       | $ "+ creditoCar[1][1] + " | $  "+ creditoCar[k][2] + "</h1>");
+                            out.println("<TR>");
+                            out.println("<TD>" + creditoCar[k][0] + "</TD> <TD>$ "+ creditoCar[1][1] + "</TD> <TD>$ "+ creditoCar[k][2] + "</TD>");
+                            out.println("</TR>");
                      }else{
-                            out.println("<h1><br>" + creditoCar[k][0] + "       | $ "+ creditoCar[k][1] + " | $  "+ creditoCar[k][2] + "</h1>");
+                            out.println("<TR>");
+                            out.println("<TD>" + creditoCar[k][0] + "</TD> <TD>$ "+ creditoCar[k][1] + "</TD> <TD>$ "+ creditoCar[k][2] + "</TD>");
+                            out.println("</TR>");
                      
                      }
                      
                  }
-            
- //           out.println("<h1>Servlet ServletConcesionario at <br><br>" + Salida1 + "</h1>");
+            out.println("</TR>");
+            out.println("</TABLE>");        
             out.println("</body>");
             out.println("</html>");
         } finally {
