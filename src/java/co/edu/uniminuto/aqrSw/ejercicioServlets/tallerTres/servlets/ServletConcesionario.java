@@ -22,6 +22,9 @@ public class ServletConcesionario extends HttpServlet {
     
     
     private FormularioPersonaVo miForm;
+    
+
+    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,29 +41,32 @@ public class ServletConcesionario extends HttpServlet {
         PrintWriter out = response.getWriter();
         
         
-        float saldoInicial;
-        float vlrCuota;
-        float saldoAct;
-        float saldos;
+  
         
-        saldoInicial = miForm.getValor() - miForm.getCoutaInicial();        
-        vlrCuota =  saldoInicial / miForm.getCoutas() ;
-        saldoAct =  vlrCuota * miForm.getCoutas() ;
-        saldos = saldoAct - vlrCuota;
+        Long valorAuto = Long.parseLong(miForm.getValor());
         
+        Long saldoInicial = valorAuto - miForm.getCoutaInicial();        
+        Long vlrCuota =  saldoInicial / miForm.getCoutas() ;
+        Long saldoAct =  vlrCuota * miForm.getCoutas() ;
+        Long saldos = saldoAct - vlrCuota;
         
-        
-        float creditoCar[][] = new float[miForm.getCoutas()+1][3]; 
+     
         
         
-        for ( int i= 0 ; i < creditoCar.length; i++ ){
+        Long creditoCar[][] = new Long[miForm.getCoutas()+1][3]; 
+        
+        Integer i = new Integer(0);
+        
+        for (  i= 0 ; i < creditoCar.length; i++ ){
                      
-                     creditoCar[i][0]= i +1 ; 
+                     long k = i.longValue();
+            
+                    creditoCar[i][0]= k +1 ; 
                      
                      
                      if ( i == 0){
                          saldos = saldoInicial;                        
-                         creditoCar[i][1] = miForm.getValor(); 
+                         creditoCar[i][1] = valorAuto; 
                          creditoCar[i][2] = creditoCar[i][1] - miForm.getCoutaInicial();
                      }
                      
@@ -72,32 +78,6 @@ public class ServletConcesionario extends HttpServlet {
              
         }
         
-//        String escribirCar[][] = new String[miForm.getCoutas()+1][3];
-//        
-//        
-//        for ( int j= 0 ; j < escribirCar.length; j++ ){
-//        
-//                    escribirCar[j][0] =  String.valueOf(creditoCar[j][0]);
-//                    escribirCar[j][1] =  String.valueOf(creditoCar[j][1]);
-//                    escribirCar[j][2] =  String.valueOf(creditoCar[j][2]);           
-//            
-//        }
-        
-        
-        String Salida = "Elementos de la Matriz\n";
-                 for(int k=0;k<creditoCar.length;k++) {
-                    for(int l=0;l<creditoCar[l].length;l++)
-                            Salida+= creditoCar[k][l]+" ";
-                            Salida+="\n";
-            }
-  //      JOptionPane.showMessageDialog(null,Salida,"MATRIZ DE VALORES",JOptionPane.INFORMATION_MESSAGE);
-        
-        
-     
-    
-        
-        
-        
         try {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
@@ -106,7 +86,20 @@ public class ServletConcesionario extends HttpServlet {
             out.println("<title>Servlet ServletConcesionario</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ServletConcesionario at <br><br>" + Salida + "</h1>");
+            
+            out.println("<h1><br> Cuotas | Valor             | $  Saldo              </h1>");   
+                 for(int k=0;k<creditoCar.length;k++) {
+                    
+                     if ( k > 0 ) {
+                            out.println("<h1><br>" + creditoCar[k][0] + "       | $ "+ creditoCar[1][1] + " | $  "+ creditoCar[k][2] + "</h1>");
+                     }else{
+                            out.println("<h1><br>" + creditoCar[k][0] + "       | $ "+ creditoCar[k][1] + " | $  "+ creditoCar[k][2] + "</h1>");
+                     
+                     }
+                     
+                 }
+            
+ //           out.println("<h1>Servlet ServletConcesionario at <br><br>" + Salida1 + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {
@@ -144,9 +137,9 @@ public class ServletConcesionario extends HttpServlet {
             String nombre = request.getParameter("nombre");
             int marca = Integer.parseInt(request.getParameter("marca"));
             int coutas = Integer.parseInt(request.getParameter("cuotas"));
-            float coutaInicial = Float.parseFloat(request.getParameter("cuotaInicial"));   
+            Long coutaInicial = Long.parseLong(request.getParameter("cuotaInicial"));   
        
-             float valor ;
+             String valor ;
             
             
             
@@ -154,43 +147,43 @@ public class ServletConcesionario extends HttpServlet {
 
             case 1:
                     
-                valor = 250000000;   
+                valor = "250000000";   
                
                 break;
 			
             case 2:
 
-                valor = 150000000;   
+                valor = "150000000";   
                
                 break;
 			
             case 3:
 
-                valor = 60000000;   
+                valor = "60000000";   
                
                 break;
             
             case 4:
 
-                valor = 30000000;   
+                valor = "30000000";   
                
                 break;
                 
             case 5:
 
-                valor = 25000000;   
+                valor = "25000000";   
                
                 break;    
-                
-                
-                
-               default:
+                    
+            default:
 
-                    valor = 0 ;
+               valor = "0" ;
 
-                   break;    
+               break;    
 
-            }      
+            }           
+            
+            
         
         miForm = new FormularioPersonaVo (nombre, marca, coutas, coutaInicial , valor );    
             

@@ -14,10 +14,10 @@ public class FormularioPersonaVo {
     String nombre;
     int marca;
     int coutas;
-    float coutaInicial;
-    float valor;
+    Long coutaInicial;
+    String valor;
 
-    public FormularioPersonaVo(String nNombre, int nmarca, int ncoutas, float ncoutaInicial, float nvalor) {
+    public FormularioPersonaVo(String nNombre, int nmarca, int ncoutas, Long ncoutaInicial, String nvalor) {
         this.nombre = nNombre;
         this.marca = nmarca;
         this.coutas = ncoutas;
@@ -50,23 +50,22 @@ public class FormularioPersonaVo {
         this.coutas = coutas;
     }
 
-    public float getCoutaInicial() {
+    public Long getCoutaInicial() {
         return coutaInicial;
     }
 
-    public void setCoutaInicial(float coutaInicial) {
+    public void setCoutaInicial(Long coutaInicial) {
         this.coutaInicial = coutaInicial;
     }
 
-    public float getValor() {
+    public String getValor() {
         return valor;
     }
 
-    public void setValor(float valor) {
+    public void setValor(String valor) {
         this.valor = valor;
     }
-
-   
+ 
     
     
 }
